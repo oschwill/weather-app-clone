@@ -11,12 +11,6 @@ const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 
 const dayIndex = new Date().getDay();
 
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
-
 const weatherImages = {
   icons: {
     sunny: '<i class="fa-solid fa-sun fa-beat" style="color: #fef600;"></i>',
