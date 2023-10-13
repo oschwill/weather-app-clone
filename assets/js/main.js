@@ -3,13 +3,10 @@ const submit = document.querySelector('.submit');
 const weatherInput = document.querySelector('.weather-input');
 const container = document.querySelector('.container');
 const body = document.querySelector('body');
+const clue = document.querySelector('.clue');
 let bottomPage, topPage, loadingScreen;
 
-// const fetchCityUrl = `http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${apiKey}`;
-const fetchCityUrl = `http://api.openweathermap.org/geo/1.0/direct?q=London&limit=1&appid=${apiKey}`;
-
 /* PROPERTIES */
-let geoData = {};
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const dayIndex = new Date().getDay();
@@ -74,20 +71,26 @@ const buildWeatherApp = () => {
   navigator.permissions.query({ name: 'geolocation' }).then((data) => {
     geoActive = data.state;
 
+    // Loadingscreen
+    container.insertAdjacentElement('beforeend', buildLoadingScreen());
+    loadingScreen = document.querySelector('.loading');
+
     if (geoActive !== 'denied') {
       // Build geoLocation Site
       navigator.geolocation.getCurrentPosition(getUserPosition);
       return;
     }
 
-    // Build Loading Site
-    container.insertAdjacentElement('beforeend', buildLoadingScreen());
-
-    loadingScreen = document.querySelector('.loading');
+    clue.innerHTML = 'Bitte aktivieren Sie Ihre GeoLocation oder geben Sie eine Stadt ein!';
+    clue.style.display = 'block';
   });
 };
 
 const buildTopScreenApp = (data) => {
+  // Clear Loading Screen if exist
+  loadingScreen?.remove();
+  // clear clue if exist?
+  clue.style.display = 'none';
   // remove die Klasse von body
   body.removeAttribute('class');
   // remove topPage
@@ -235,11 +238,7 @@ const buildLoadingScreen = () => {
   image.setAttribute('src', 'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif');
   image.setAttribute('alt', 'loading');
 
-  const paragraph = document.createElement('p');
-  paragraph.textContent = 'Activate your location or type in your city!';
-
   loader.appendChild(image);
-  loader.appendChild(paragraph);
 
   return loader;
 };
@@ -250,9 +249,6 @@ const startWeatherPrediction = async (e) => {
 
   let getCityData = await getDataByCity(cityVal);
   let getWeatherData = await getDataByGeoLocation(getCityData[0]);
-
-  // Clear Loading Screen if exist
-  loadingScreen?.remove();
 
   // Build Site
   buildTopScreenApp(getWeatherData);
