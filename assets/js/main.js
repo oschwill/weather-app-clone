@@ -192,7 +192,7 @@ const buildBottomScreenApp = (data) => {
         </div>
         <div class="humidity">
           <span class="title">Humidity: </span>
-          <span class="value">${data.main.humidity}</span>
+          <span class="value">${data.main.humidity}%</span>
         </div>
         <div class="wind">
           <span class="title">Wind Speed: </span>
