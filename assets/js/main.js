@@ -125,6 +125,10 @@ const buildTopScreenApp = (data) => {
       svg = weatherImages.icons.rainy;
       backgroundImageClass = weatherImages.backgroundImageClasses.rainyClass;
       break;
+    case 'Drizzle':
+      svg = weatherImages.icons.rainy;
+      backgroundImageClass = weatherImages.backgroundImageClasses.rainyClass;
+      break;
     case 'Clear':
       svg = weatherImages.icons.sunny;
       backgroundImageClass = weatherImages.backgroundImageClasses.sunnyClass;
