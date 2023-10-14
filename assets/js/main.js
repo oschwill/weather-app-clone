@@ -66,7 +66,7 @@ const buildWeatherApp = () => {
     container.insertAdjacentElement('beforeend', buildLoadingScreen());
     loadingScreen = document.querySelector('.loading');
 
-    if (geoActive !== 'denied') {
+    if (geoActive !== 'denied' && geoActive === 'granted') {
       // Build geoLocation Site
       navigator.geolocation.getCurrentPosition(getUserPosition);
       return;
