@@ -1,5 +1,6 @@
 /* CONTAINER */
 const submit = document.querySelector('.submit');
+const cityInput = document.querySelector('.city-value');
 const weatherInput = document.querySelector('.weather-input');
 const container = document.querySelector('.container');
 const body = document.querySelector('body');
@@ -14,11 +15,11 @@ const dayIndex = new Date().getDay();
 const weatherImages = {
   icons: {
     sunny: '<i class="fa-solid fa-sun fa-beat" style="color: #fef600;"></i>',
-    cloudy: '<i class="fa-solid fa-cloud" style="color: #ffffff;"></i>',
+    cloudy: '<i class="fa-solid fa-cloud fa-beat" style="color: #ffffff;"></i>',
     windy: '<i class="fa-solid fa-wind fa-shake" style="color: #0114ff;"></i>',
     rainy: '<i class="fa-solid fa-droplet fa-bounce" style="color: #0114ff;"></i>',
     bolt: '<i class="fa-solid fa-cloud-bolt fa-beat-fade" style="color: #696a79;"></i>',
-    snowy: '<i class="fa-solid fa-snowflake fa-beat" style="color: #90c3ff;"></i>',
+    snowy: '<i class="fa-solid fa-snowflake fa-beat" style="color: hsl(177, 75%, 58%);"></i>',
   },
   backgroundImageClasses: {
     sunnyClass: 'sunny-weather',
@@ -30,33 +31,29 @@ const weatherImages = {
 
 /* FUNCTIONS */
 const getUserPosition = async (position) => {
-  // Build Site
-  let weatherData = await getDataByGeoLocation({
-    lat: position.coords.latitude,
-    lon: position.coords.longitude,
+  // get Data
+  let weatherData = await getDataByParam({
+    url: `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=${apiKey}`,
+    errorMsg: 'Error Beim holen der Wetterdaten',
   });
 
-  buildTopScreenApp(weatherData);
+  // Fetch Forecast
+  let forecast = await getDataByParam({
+    url: `http://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=${apiKey}`,
+    errorMsg: 'Error beim Holen der City',
+  });
+
+  // Build Site
+  buildTopScreenApp(weatherData, forecast);
   buildBottomScreenApp(weatherData);
 };
 
-const getDataByCity = async (city) => {
-  const fetchCityUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=10&appid=${apiKey}`;
-  return fetch(fetchCityUrl)
+const getDataByParam = async (fetchObj) => {
+  return fetch(fetchObj.url)
     .then((response) => response.json())
     .then((data) => data)
     .catch((error) => {
-      alert.error('Error beim Holen der City', error);
-    });
-};
-
-const getDataByGeoLocation = async (geoObj) => {
-  const fetchWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${geoObj.lat}&lon=${geoObj.lon}&units=metric&appid=${apiKey}`;
-  return await fetch(fetchWeatherUrl)
-    .then((response) => response.json())
-    .then((data) => data)
-    .catch((error) => {
-      console.error('Error Beim holen der Wetterdaten', error);
+      alert.error(fetchObj.errorMsg, error);
     });
 };
 
@@ -80,7 +77,7 @@ const buildWeatherApp = () => {
   });
 };
 
-const buildTopScreenApp = (data) => {
+const buildTopScreenApp = (data, forecastData) => {
   // Clear Loading Screen if exist
   loadingScreen?.remove();
   // clear clue if exist?
@@ -104,6 +101,8 @@ const buildTopScreenApp = (data) => {
   let day = new Date().getDate();
   let month = ('0' + new Date().getMonth()).slice(-2);
   let year = new Date().getFullYear();
+
+  let dayCounter = 0;
 
   let svg = null;
   let backgroundImageClass = null;
@@ -147,7 +146,7 @@ const buildTopScreenApp = (data) => {
           <div>
             <h2 class="date-dayname">${days[dayIndex]}</h2>
             <span class="location">${time}</span>
-            <span class="date-day">${day}.${month}.${year}</span>
+            <span class="date-day">${month}/${day}/${year}</span>
             <span class="location">${data.name}, ${data.sys.country}</span>
           </div>
           <div class="weather-svg">
@@ -159,6 +158,27 @@ const buildTopScreenApp = (data) => {
         <div class="weather-container">          
           <h1 class="weather-temp">${Math.floor(data.main.temp)}°C </h1>
           <h3 class="weather-desc">${data.weather[0].description}</h3>
+        </div>
+        <div class="forecast">
+        ${forecastData.list
+          .map((val) => {
+            if (
+              new Date(val.dt_txt).getDate() === day + dayCounter &&
+              new Date(val.dt_txt).getHours() === 12 &&
+              dayCounter < 3
+            ) {
+              dayCounter++;
+              return `
+            <div>
+              <p>${month}/${day + dayCounter}/${year}</p>
+              <h2>${Math.floor(val.main.temp)}°C</h2>
+              <p>${val.weather[0].description}</p>
+            </div>
+            `;
+            }
+            return '';
+          })
+          .join('')}
         </div>
       </div>  
   `
@@ -243,13 +263,28 @@ const buildLoadingScreen = () => {
 
 //
 const startWeatherPrediction = async (e) => {
-  const cityVal = document.querySelector('.city-value').value;
+  const cityVal = cityInput.value;
 
-  let getCityData = await getDataByCity(cityVal);
-  let getWeatherData = await getDataByGeoLocation(getCityData[0]);
+  // Fetch City Geo
+  let getCityData = await getDataByParam({
+    url: `http://api.openweathermap.org/geo/1.0/direct?q=${cityVal}&limit=10&appid=${apiKey}`,
+    errorMsg: 'Error beim Holen der City',
+  });
+
+  // Fetch Forecast
+  let forecast = await getDataByParam({
+    url: `http://api.openweathermap.org/data/2.5/forecast?lat=${getCityData[0].lat}&lon=${getCityData[0].lon}&units=metric&appid=${apiKey}`,
+    errorMsg: 'Error beim Holen der City',
+  });
+
+  // Fetch weather data
+  let getWeatherData = await getDataByParam({
+    url: `https://api.openweathermap.org/data/2.5/weather?lat=${getCityData[0].lat}&lon=${getCityData[0].lon}&units=metric&appid=${apiKey}`,
+    errorMsg: 'Error Beim holen der Wetterdaten',
+  });
 
   // Build Site
-  buildTopScreenApp(getWeatherData);
+  buildTopScreenApp(getWeatherData, forecast);
   buildBottomScreenApp(getWeatherData);
 };
 // RUN
@@ -257,3 +292,6 @@ buildWeatherApp();
 
 /* EVENTLISTENER */
 submit.addEventListener('click', startWeatherPrediction);
+cityInput.addEventListener('keypress', (e) =>
+  e.key === 'Enter' ? startWeatherPrediction() : null
+);
