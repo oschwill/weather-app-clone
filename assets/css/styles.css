@@ -154,6 +154,7 @@ body {
   border-radius: 25px;
   background-size: cover;
   width: 100%;
+  animation: fade-weather 0.75s linear 0s 1;
 }
 
 .sunny-weather {
@@ -288,6 +289,7 @@ body {
   border-radius: 10px;
   border-right: 1px solid rgb(255, 255, 255);
   border-left: 1px solid rgb(255, 255, 255);
+  animation: fade-weather 0.75s linear 0s 1;
 }
 
 .today-info > div:not(:last-child) {
@@ -356,4 +358,14 @@ body {
   text-align: center;
   margin: 10px 0 0 0;
   font-weight: 700;
+}
+
+@keyframes fade-weather {
+  from {
+    transform: translateX(-5000px);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
