@@ -135,6 +135,10 @@ const buildTopScreenApp = (data, forecastData) => {
       svg = weatherImages.icons.misty;
       backgroundImageClass = weatherImages.backgroundImageClasses.mistyClass;
       break;
+    case 'Haze':
+      svg = weatherImages.icons.misty;
+      backgroundImageClass = weatherImages.backgroundImageClasses.mistyClass;
+      break;
 
     default:
       break;
