@@ -20,12 +20,14 @@ const weatherImages = {
     rainy: '<i class="fa-solid fa-droplet fa-bounce" style="color: #0114ff;"></i>',
     bolt: '<i class="fa-solid fa-cloud-bolt fa-beat-fade" style="color: #696a79;"></i>',
     snowy: '<i class="fa-solid fa-snowflake fa-beat" style="color: hsl(177, 75%, 58%);"></i>',
+    misty: '<i class="fa-solid fa-bacon fa-beat" style="color: #ffffff;"></i>',
   },
   backgroundImageClasses: {
     sunnyClass: 'sunny-weather',
     rainyClass: 'rainy-weather',
     cloudyClass: 'cloudy-weather',
     snowyClass: 'snowy-weather',
+    mistyClass: 'misty-weather',
   },
 };
 
@@ -112,7 +114,6 @@ const buildTopScreenApp = (data, forecastData) => {
     case 'Clouds':
       svg = weatherImages.icons.cloudy;
       backgroundImageClass = weatherImages.backgroundImageClasses.cloudyClass;
-
       break;
     case 'Rain':
       svg = weatherImages.icons.rainy;
@@ -129,6 +130,10 @@ const buildTopScreenApp = (data, forecastData) => {
     case 'Snow':
       svg = weatherImages.icons.snowy;
       backgroundImageClass = weatherImages.backgroundImageClasses.snowyClass;
+      break;
+    case 'Mist':
+      svg = weatherImages.icons.misty;
+      backgroundImageClass = weatherImages.backgroundImageClasses.mistyClass;
       break;
 
     default:
@@ -164,7 +169,7 @@ const buildTopScreenApp = (data, forecastData) => {
           .map((val) => {
             if (
               new Date(val.dt_txt).getDate() === day + dayCounter &&
-              new Date(val.dt_txt).getHours() === 12 &&
+              new Date(val.dt_txt).getHours() === 15 &&
               dayCounter < 3
             ) {
               dayCounter++;

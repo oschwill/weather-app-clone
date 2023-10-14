@@ -157,7 +157,7 @@ body {
 }
 
 .sunny-weather {
-  background-image: url('https://wallpapers.com/images/hd/sunny-weather-with-cherry-blossom-fr2tn0f21evp0viw.jpg');
+  background-image: url('https://www.wagrain24.at/images/galerie/2018/10-04_jaegersee_kleinarl/big/Jaegersee_Kleinarl_20181004_04.jpg');
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
@@ -178,7 +178,14 @@ body {
 }
 
 .snowy-weather {
-  background-image: url('https://naturfotografen-forum.de/data/o/358/1792085/image.jpg');
+  background-image: url('https://images8.alphacoders.com/861/861868.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.misty-weather {
+  background-image: url('https://pheisig.de/assets/img/2019_kw09_lilienstein/nebellandschaft.jpg');
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
