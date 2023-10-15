@@ -104,7 +104,7 @@ const buildTopScreenApp = (data, forecastData) => {
     .concat(`${new Date().getHours() >= 12 ? ' PM' : ' AM'}`);
 
   let day = new Date().getDate();
-  let month = ('0' + new Date().getMonth()).slice(-2);
+  let month = ('0' + (new Date().getMonth() + 1)).slice(-2);
   let year = new Date().getFullYear();
 
   let dayCounter = 0;
@@ -269,8 +269,7 @@ const buildBottomScreenApp = (data, coords) => {
 
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
     foo: 'bar',
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    attribution: '&copy; powered by Schwillsche Weather App',
   }).addTo(map);
 };
 
