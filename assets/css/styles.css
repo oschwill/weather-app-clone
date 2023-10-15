@@ -360,6 +360,10 @@ body {
   font-weight: 700;
 }
 
+#map {
+  width: 38%;
+}
+
 @keyframes fade-weather {
   from {
     transform: translateX(-5000px);

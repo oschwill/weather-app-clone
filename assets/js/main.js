@@ -29,6 +29,8 @@ const weatherImages = {
   },
 };
 
+const mapZoomLevel = 12;
+
 /* FUNCTIONS */
 const getUserPosition = async (position) => {
   // get Data
@@ -45,7 +47,10 @@ const getUserPosition = async (position) => {
 
   // Build Site
   buildTopScreenApp(weatherData, forecast);
-  buildBottomScreenApp(weatherData);
+  buildBottomScreenApp(weatherData, {
+    lat: position.coords.latitude,
+    lon: position.coords.longitude,
+  });
 };
 
 const getDataByParam = async (fetchObj) => {
@@ -195,8 +200,7 @@ const buildTopScreenApp = (data, forecastData) => {
   topPage = document.querySelector('.weather-side');
 };
 
-const buildBottomScreenApp = (data) => {
-  console.log(data);
+const buildBottomScreenApp = (data, coords) => {
   // remove bottomPage
   if (bottomPage) {
     bottomPage.remove();
@@ -233,6 +237,7 @@ const buildBottomScreenApp = (data) => {
           <span class="value">${data.main.pressure} hPa</span>
         </div>
       </div>
+      <div id="map"></div>
       <div class="today-info">
         <div class="precipitation">
           <span class="title">Sunrise: </span>
@@ -255,6 +260,18 @@ const buildBottomScreenApp = (data) => {
   );
 
   bottomPage = document.querySelector('.info-side');
+
+  // Build Map
+  const map = L.map('map', {
+    center: [Number(coords.lat), Number(coords.lon)],
+    zoom: mapZoomLevel,
+  });
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
+    foo: 'bar',
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
 };
 
 const buildLoadingScreen = () => {
@@ -294,7 +311,10 @@ const startWeatherPrediction = async (e) => {
 
   // Build Site
   buildTopScreenApp(getWeatherData, forecast);
-  buildBottomScreenApp(getWeatherData);
+  buildBottomScreenApp(getWeatherData, {
+    lat: getCityData[0].lat,
+    lon: getCityData[0].lon,
+  });
 };
 // RUN
 buildWeatherApp();
