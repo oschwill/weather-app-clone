@@ -146,6 +146,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 75vw;
+  overflow: hidden;
 }
 
 .weather-side {
@@ -364,6 +365,7 @@ body {
 
 #map {
   width: 38%;
+  animation: fade-map 0.75s linear 0s 1;
 }
 
 @keyframes fade-weather {
@@ -373,5 +375,15 @@ body {
 
   to {
     transform: translateX(0);
+  }
+}
+
+@keyframes fade-map {
+  from {
+    left: 2000px;
+  }
+
+  to {
+    left: 0;
   }
 }
