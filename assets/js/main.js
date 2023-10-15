@@ -10,8 +10,6 @@ let bottomPage, topPage, loadingScreen;
 /* PROPERTIES */
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-const dayIndex = new Date().getDay();
-
 const weatherImages = {
   icons: {
     sunny: '<i class="fa-solid fa-sun fa-beat" style="color: #fef600;"></i>',
@@ -42,7 +40,7 @@ const getUserPosition = async (position) => {
   // Fetch Forecast
   let forecast = await getDataByParam({
     url: `http://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=${apiKey}`,
-    errorMsg: 'Error beim Holen der City',
+    errorMsg: 'Error beim Holen der Forecasts',
   });
 
   // Build Site
@@ -105,6 +103,7 @@ const buildTopScreenApp = (data, forecastData) => {
   let year = new Date().getFullYear();
 
   let dayCounter = 0;
+  const dayIndex = new Date().getDay();
 
   let svg = null;
   let backgroundImageClass = null;
@@ -197,6 +196,7 @@ const buildTopScreenApp = (data, forecastData) => {
 };
 
 const buildBottomScreenApp = (data) => {
+  console.log(data);
   // remove bottomPage
   if (bottomPage) {
     bottomPage.remove();
@@ -283,7 +283,7 @@ const startWeatherPrediction = async (e) => {
   // Fetch Forecast
   let forecast = await getDataByParam({
     url: `http://api.openweathermap.org/data/2.5/forecast?lat=${getCityData[0].lat}&lon=${getCityData[0].lon}&units=metric&appid=${apiKey}`,
-    errorMsg: 'Error beim Holen der City',
+    errorMsg: 'Error beim Holen der Forecasts',
   });
 
   // Fetch weather data
