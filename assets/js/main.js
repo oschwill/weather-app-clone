@@ -107,7 +107,7 @@ const buildTopScreenApp = (data, forecastData) => {
   let month = ('0' + (new Date().getMonth() + 1)).slice(-2);
   let year = new Date().getFullYear();
 
-  let dayCounter = 0;
+  let dayCounter = 1;
   const dayIndex = new Date().getDay();
 
   let svg = null;
@@ -178,16 +178,17 @@ const buildTopScreenApp = (data, forecastData) => {
             if (
               new Date(val.dt_txt).getDate() === day + dayCounter &&
               new Date(val.dt_txt).getHours() === 15 &&
-              dayCounter < 3
+              dayCounter <= 3
             ) {
-              dayCounter++;
-              return `
-            <div>
+              let returnString = `
+              <div>
               <p>${month}/${day + dayCounter}/${year}</p>
               <h2>${Math.floor(val.main.temp)}°C</h2>
               <p>${val.weather[0].description}</p>
-            </div>
-            `;
+              </div>
+              `;
+              dayCounter++;
+              return returnString;
             }
             return '';
           })
