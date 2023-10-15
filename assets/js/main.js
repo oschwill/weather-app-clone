@@ -291,6 +291,12 @@ const buildLoadingScreen = () => {
 const startWeatherPrediction = async (e) => {
   const cityVal = cityInput.value;
 
+  // Loadingscreen
+  if (!document.querySelector('.loading')) {
+    container.insertAdjacentElement('beforeend', buildLoadingScreen());
+    loadingScreen = document.querySelector('.loading');
+  }
+
   // Fetch City Geo
   let getCityData = await getDataByParam({
     url: `http://api.openweathermap.org/geo/1.0/direct?q=${cityVal}&limit=10&appid=${apiKey}`,

@@ -134,6 +134,10 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  position: absolute;
+  z-index: 10;
+  left: 45vw;
+  bottom: 0;
 }
 
 .container {
