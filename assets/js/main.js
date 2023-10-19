@@ -3,7 +3,7 @@ const submit = document.querySelector('.submit');
 const cityInput = document.querySelector('.city-value');
 const weatherInput = document.querySelector('.weather-input');
 const container = document.querySelector('.container');
-const body = document.querySelector('body');
+const wrapper = document.querySelector('#wrapper');
 const clue = document.querySelector('.clue');
 let bottomPage, topPage, loadingScreen;
 
@@ -88,7 +88,7 @@ const buildTopScreenApp = (data, forecastData) => {
   // clear clue if exist?
   clue.style.display = 'none';
   // remove die Klasse von body
-  body.removeAttribute('class');
+  wrapper.removeAttribute('class');
   // remove topPage
   if (topPage) {
     topPage.remove();
@@ -148,12 +148,13 @@ const buildTopScreenApp = (data, forecastData) => {
       break;
   }
 
-  body.classList.add(backgroundImageClass);
+  wrapper.classList.add(backgroundImageClass);
+  wrapper.classList.add('bg-style');
 
   container.insertAdjacentHTML(
     'beforeend',
     `
-      <div class="weather-side ${backgroundImageClass}">
+      <article class="weather-side ${backgroundImageClass} bg-style">
         <div class="weather-gradient"></div>
         <div class="date-container">
           <div>
@@ -194,7 +195,7 @@ const buildTopScreenApp = (data, forecastData) => {
           })
           .join('')}
         </div>
-      </div>  
+      </article>  
   `
   );
 
@@ -218,7 +219,7 @@ const buildBottomScreenApp = (data, coords) => {
   container.insertAdjacentHTML(
     'beforeend',
     `
-     <div class="info-side">
+     <article class="info-side">
       <div class="today-info">
         <div class="precipitation">
           <span class="title">Feels Like: </span><span class="value">${Math.floor(
@@ -239,7 +240,7 @@ const buildBottomScreenApp = (data, coords) => {
         </div>
       </div>
       <div id="map"></div>
-      <div class="today-info">
+      <article class="today-info">
         <div class="precipitation">
           <span class="title">Sunrise: </span>
           <span class="value">${riseHours}:${riseMinutes}:${riseSeconds}</span>
@@ -256,7 +257,7 @@ const buildBottomScreenApp = (data, coords) => {
           <span class="title">Max Temperatur: </span>
           <span class="value">${Math.floor(data.main.temp_max)}°C</span>
         </div>
-      </div>
+      </article>
   `
   );
 
